@@ -1,1 +1,503 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DebojitApps - Android Apps & APK Downloads</title>
+  <meta name="description" content="DebojitApps - Download Android apps and APK files.">
+  <meta name="robots" content="index, follow">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f7f8fa;
+      color: #171717;
+    }
+
+    header {
+      background: white;
+      padding: 22px 16px;
+      border-bottom: 1px solid #e8e8e8;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .logo span {
+      color: #2563eb;
+    }
+
+    .search {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: #2563eb;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 25px 16px 50px;
+    }
+
+    .hero {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid #e9e9e9;
+    }
+
+    .hero h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .apps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .app-card {
+      background: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .app-top {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .app-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      object-fit: cover;
+      background: #eee;
+      flex-shrink: 0;
+    }
+
+    .app-name {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .app-version {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .description {
+      color: #666;
+      line-height: 1.5;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button,
+    .download {
+      border: none;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      flex: 1;
+      text-align: center;
+    }
+
+    .details {
+      background: #eef2ff;
+      color: #2563eb;
+    }
+
+    .download {
+      background: #2563eb;
+      color: white;
+    }
+
+    .download.disabled {
+      background: #ddd;
+      color: #777;
+      cursor: not-allowed;
+    }
+
+    .empty {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      color: #777;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid #e8e8e8;
+      text-align: center;
+      padding: 25px 15px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 100;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-box {
+      background: white;
+      max-width: 600px;
+      margin: 50px auto;
+      border-radius: 20px;
+      padding: 25px;
+    }
+
+    .close {
+      float: right;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .modal h2 {
+      margin-bottom: 12px;
+    }
+
+    .modal p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .features {
+      margin: 15px 0;
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 500px) {
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .apps {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">Debojit<span>Apps</span></div>
+
+    <input
+      id="search"
+      class="search"
+      type="search"
+      placeholder="Search apps..."
+      oninput="searchApps()"
+    >
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1>Android Apps & APK Downloads</h1>
+    <p>
+      Welcome to DebojitApps. Find Android apps, app information,
+      versions and direct APK download links in one place.
+    </p>
+  </section>
+
+  <h2 class="section-title">All Apps</h2>
+
+  <div id="apps" class="apps"></div>
+
+</main>
+
+<footer>
+  © 2026 DebojitApps. All rights reserved.
+</footer>
+
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <span class="close" onclick="closeDetails()">×</span>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+
+const apps = [
+
+  {
+    id: "depthflow-3d",
+    name: "DepthFlow 3D",
+    version: "1.0.0",
+    size: "Coming soon",
+    category: "Wallpaper",
+    description: "Create smooth 3D depth and parallax wallpapers from your photos.",
+    fullDescription:
+      "DepthFlow 3D is an Android wallpaper application designed to create a depth-style parallax effect from your photos.",
+    features: [
+      "3D depth effect",
+      "Smooth parallax movement",
+      "Photo based wallpaper",
+      "Home and Lock screen support"
+    ],
+
+    /*
+      PUT YOUR REAL GITHUB RELEASE APK LINK HERE
+      Example:
+      https://github.com/Debojit/Debojitapp-apk/releases/download/v1.0.0/DepthFlow3D.apk
+    */
+
+    apkUrl: "",
+
+    icon: ""
+  },
+
+  {
+    id: "nikhil-da",
+    name: "Nikhil Da",
+    version: "1.0.0",
+    size: "Coming soon",
+    category: "AI Assistant",
+    description: "An AI assistant Android app powered by Gemini.",
+    fullDescription:
+      "Nikhil Da is an AI assistant application designed to provide useful AI-powered conversations and features.",
+    features: [
+      "AI assistant",
+      "Gemini powered",
+      "Voice interaction",
+      "Modern Android interface"
+    ],
+
+    apkUrl: "",
+
+    icon: ""
+  }
+
+];
+
+
+function getIcon(app) {
+
+  if (app.icon) {
+    return `<img class="app-icon" src="${app.icon}" alt="${app.name}">`;
+  }
+
+  return `
+    <div class="app-icon"
+      style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:22px;
+        font-weight:800;
+        background:#eef2ff;
+        color:#2563eb;
+      ">
+      ${app.name.charAt(0)}
+    </div>
+  `;
+}
+
+
+function renderApps(list = apps) {
+
+  const container = document.getElementById("apps");
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        No apps found.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = list.map(app => {
+
+    const downloadButton = app.apkUrl
+      ? `<a class="download" href="${app.apkUrl}" target="_blank">Download APK</a>`
+      : `<span class="download disabled">APK Coming Soon</span>`;
+
+    return `
+      <article class="app-card">
+
+        <div class="app-top">
+
+          ${getIcon(app)}
+
+          <div>
+            <div class="app-name">${app.name}</div>
+            <div class="app-version">
+              Version ${app.version} • ${app.category}
+            </div>
+          </div>
+
+        </div>
+
+        <p class="description">
+          ${app.description}
+        </p>
+
+        <div class="buttons">
+
+          <button
+            class="details"
+            onclick="showDetails('${app.id}')">
+            Details
+          </button>
+
+          ${downloadButton}
+
+        </div>
+
+      </article>
+    `;
+
+  }).join("");
+}
+
+
+function searchApps() {
+
+  const query =
+    document.getElementById("search").value
+    .toLowerCase()
+    .trim();
+
+  const filtered = apps.filter(app => {
+
+    return (
+      app.name.toLowerCase().includes(query) ||
+      app.description.toLowerCase().includes(query) ||
+      app.category.toLowerCase().includes(query)
+    );
+
+  });
+
+  renderApps(filtered);
+}
+
+
+function showDetails(id) {
+
+  const app = apps.find(item => item.id === id);
+
+  if (!app) return;
+
+  const features = app.features
+    .map(feature => `<li>${feature}</li>`)
+    .join("");
+
+  const download = app.apkUrl
+    ? `<a class="download" href="${app.apkUrl}" target="_blank">Download APK</a>`
+    : `<span class="download disabled">APK Coming Soon</span>`;
+
+  document.getElementById("modalContent").innerHTML = `
+
+    <h2>${app.name}</h2>
+
+    <p>
+      <strong>Version:</strong> ${app.version}<br>
+      <strong>Category:</strong> ${app.category}<br>
+      <strong>APK Size:</strong> ${app.size}
+    </p>
+
+    <p>
+      ${app.fullDescription}
+    </p>
+
+    <h3>Features</h3>
+
+    <ul class="features">
+      ${features}
+    </ul>
+
+    ${download}
+
+  `;
+
+  document.getElementById("modal").style.display = "block";
+}
+
+
+function closeDetails() {
+  document.getElementById("modal").style.display = "none";
+}
+
+
+window.onclick = function(event) {
+
+  const modal = document.getElementById("modal");
+
+  if (event.target === modal) {
+    closeDetails();
+  }
+
+};
+
+
+renderApps();
+
+</script>
+
+</body>
+</html>
